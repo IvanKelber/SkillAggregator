@@ -1,6 +1,7 @@
 import csv
 import json
 import requests
+import sys
 from apiKey import apiKey
 
 access_token = apiKey
@@ -15,12 +16,11 @@ class MuseAPI:
 
     def __init__(self,access_token):
         self.access_token = access_token
-        self.specs = {"page":0}
+        self.specs = {"page":0,"access_token" : self.access_token}
 
     def get_request(self,path,params={}):
-        params['access_token'] = self.access_token
         url = self.prefix_url + path
-        print "URL: ", url
+        # print "URL: ", url
         # Make a request with the given url and parameters
         # Return the JSON form of the request
         r = requests.get(url, params=params)
@@ -33,14 +33,19 @@ class MuseAPI:
         return self.get_request("jobs",self.specs)
 
 
-    def get_all_jobs(self):
+    def get_first_n_pages(self,n=sys.maxint):
         self.setSpec("page",0)
-        results = self.get_request("jobs",self.specs)
-        while(len(results["results"]) > 0):
-            print len(results)
+        total_results = []
+        while(self.specs["page"] < n):
+            print "Collecting page: " + str(self.specs["page"])
             self.setSpec("page",self.specs["page"]+1)
-            results = self.get_request("jobs",self.specs)
+            jobs = self.get_request("jobs",self.specs)
+            try:
+                total_results += jobs["results"]
+            except KeyError:
+                break
 
+        return total_results
 
 
     def setSpec(self,specification,value):
@@ -61,7 +66,11 @@ class MuseAPI:
 
 def main():
     mapi = MuseAPI(access_token)
-    print mapi.get_all_jobs()
+    mapi.setSpec("category",["Engineering","Data Science"])
+    data = mapi.get_first_n_pages()
+    with open('../data/muse_jobs.json','wb') as muse_jobs:
+        json.dump(data,muse_jobs,indent=4)
+
     # print mapi.get_request("jobs",mapi.specs)
 
 if __name__ == '__main__':
