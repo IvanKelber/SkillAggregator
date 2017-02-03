@@ -32,8 +32,14 @@ def main():
         if(not hit):
             not_hit_urls.append(job["refs"]["landing_page"])
 
-    print sorted(total_count.items(),key=lambda x: -x[1])
     print "====================="
+    with open('../data/counts.csv',"wb") as counts:
+        writer = csv.writer(counts,delimiter="\t")
+        header = ["Skill","Count","Percentage"]
+        writer.writerow(header)
+        for skill,count in sorted(total_count.items(),key=lambda x: -x[1]):
+            writer.writerow([skill,count,'%.2f'%((count/total_posts)*100)])
+
     # for url in not_hit_urls:
     #     print url
     #     print "========================"
