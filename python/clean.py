@@ -13,13 +13,15 @@ def main():
     "hadoop","rest","restful","json","xml","ios","gradle","maven","android",
     "pyramid","bash","tensorflow","r","matlab",'rust','.net',"tornado","unix",
     "linux","git","vcs","statistics","machine learning","distributed systems","networking",
-    "operating systems","algorithms","data structures","scala"]
+    "operating systems","algorithms","data structures","scala","coffeescript",
+    "framer.js","swift","objective-c","mongo"]
 
     with open('../data/muse_jobs.json',"rb") as mj:
         data = json.load(mj)
 
     total_count = {}
     not_hit_urls = []
+    total_posts = float(len(data))
     for job in data:
         hit = False
         for skill in skills:
@@ -31,9 +33,7 @@ def main():
             not_hit_urls.append(job["refs"]["landing_page"])
 
     print sorted(total_count.items(),key=lambda x: -x[1])
-    print sum([v for _,v in total_count.items()])
     print "====================="
-    print len(data)
     # for url in not_hit_urls:
     #     print url
     #     print "========================"
