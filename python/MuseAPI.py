@@ -67,9 +67,10 @@ class MuseAPI:
 def main():
     mapi = MuseAPI(access_token)
     mapi.setSpec("category",["Engineering","Data Science"])
-    data = mapi.get_first_n_pages()
+    data = mapi.get_first_n_pages(1)
     with open('../data/muse_jobs.json','wb') as muse_jobs:
         json.dump(data,muse_jobs,indent=4)
+
 
     # print mapi.get_request("jobs",mapi.specs)
 
