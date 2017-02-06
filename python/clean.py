@@ -17,7 +17,7 @@ def main():
     "framer.js","swift","objective-c","mongo","jira","angularjs","nodejs","oop",
     "object oriented","object-oriented"]
 
-    with open('../data/muse_jobs.json',"rb") as mj:
+    with open('../static/data/muse_jobs.json',"rb") as mj:
         data = json.load(mj)
 
     total_count = {}
@@ -34,8 +34,8 @@ def main():
             not_hit_urls.append(job["refs"]["landing_page"])
 
     print "====================="
-    with open('../data/counts.csv',"wb") as counts:
-        writer = csv.writer(counts,delimiter=",")
+    with open('../static/data/counts.csv',"wb") as counts:
+        writer = csv.writer(counts)
         header = ["Skill","Count","Percentage"]
         writer.writerow(header)
         for skill,count in sorted(total_count.items(),key=lambda x: -x[1]):
