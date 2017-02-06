@@ -14,7 +14,8 @@ def main():
     "pyramid","bash","tensorflow","r","matlab",'rust','.net',"tornado","unix",
     "linux","git","vcs","statistics","machine learning","distributed systems","networking",
     "operating systems","algorithms","data structures","scala","coffeescript",
-    "framer.js","swift","objective-c","mongo"]
+    "framer.js","swift","objective-c","mongo","jira","angularjs","nodejs","oop",
+    "object oriented","object-oriented"]
 
     with open('../data/muse_jobs.json',"rb") as mj:
         data = json.load(mj)
@@ -34,7 +35,7 @@ def main():
 
     print "====================="
     with open('../data/counts.csv',"wb") as counts:
-        writer = csv.writer(counts,delimiter="\t")
+        writer = csv.writer(counts,delimiter=",")
         header = ["Skill","Count","Percentage"]
         writer.writerow(header)
         for skill,count in sorted(total_count.items(),key=lambda x: -x[1]):
