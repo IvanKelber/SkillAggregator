@@ -1,14 +1,50 @@
 var requi
 function init() {
   console.log("Initialized")
-  makeChart();
+  makeChart("../data/topten.csv");
 }
 
-function makeChart() {
 
+function clear() {
+  d3.selectAll("svg > *").remove();
+}
+
+function toggleChart() {
+  button = $('#toggle');
+  text = button.text();
+  clear();
+  if(text === "Top Ten") {
+    button.text('All Counts')
+    makeChart("../data/counts.csv")
+
+  } else {
+    button.text('Top Ten')
+    makeChart("../data/topten.csv");
+
+  }
+}
+
+
+function makeChart(csv_path) {
+
+    var constants = {};
+    switch (csv_path) {
+      case "../data/topten.csv":
+        constants.rotate = 0;
+        constants.anchor = "center";
+        constants.font_size = "20px"
+        constants.y_shift = 20;
+        break;
+      case "../data/counts.csv":
+        constants.rotate = 90;
+        constants.anchor = "start"
+        constants.font_size = "14px"
+        constants.y_shift = 0;
+        break;
+    }
 
     var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 100, left: 40},
+        margin = {top: 20, right: 20, bottom: 135, left: 40},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -18,7 +54,7 @@ function makeChart() {
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.csv("../data/counts.csv", function(d) {
+    d3.csv(csv_path, function(d) {
       d.Percentage = +d.Percentage;
       return d;
     }, function(error, data) {
@@ -32,12 +68,12 @@ function makeChart() {
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x))
           .selectAll("text")
-          .attr("y", 20)
+          .attr("y", constants.y_shift)
           .attr("x", 9)
           .attr("dy", ".35em")
-          .attr("transform","rotate(0)")
-          .style("text-anchor","center")
-          .style("font-size","20px");
+          .attr("transform","rotate("+constants.rotate+")")
+          .style("text-anchor",constants.anchor)
+          .style("font-size",constants.font_size);
 
       g.append("g")
           .attr("class", "axis axis--y")
