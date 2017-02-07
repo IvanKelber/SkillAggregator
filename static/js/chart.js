@@ -8,7 +8,7 @@ function makeChart() {
 
 
     var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 30, left: 40},
+        margin = {top: 20, right: 20, bottom: 100, left: 40},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -25,7 +25,7 @@ function makeChart() {
       if (error) throw error;
 
       x.domain(data.map(function(d) { return d.Skill; }));
-      y.domain([0, d3.max(data, function(d) { return d.Percentage; })]);
+      y.domain([0, d3.max(data,function(d){return d.Percentage})]);
 
       g.append("g")
           .attr("class", "axis axis--x")
@@ -40,7 +40,7 @@ function makeChart() {
 
       g.append("g")
           .attr("class", "axis axis--y")
-          .call(d3.axisLeft(y).ticks(10, "%"))
+          .call(d3.axisLeft(y).ticks(10))
         .append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 6)
