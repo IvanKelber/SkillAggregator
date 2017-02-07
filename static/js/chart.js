@@ -1,7 +1,7 @@
 var requi
 function init() {
   console.log("Initialized")
-  makeChart("../data/topten.csv");
+  makeChart("../data/counts.csv");
 }
 
 
@@ -9,18 +9,17 @@ function clear() {
   d3.selectAll("svg > *").remove();
 }
 
+let swap = false;
+
 function toggleChart() {
-  button = $('#toggle');
-  text = button.text();
   clear();
-  if(text === "Top Ten") {
-    button.text('All Counts')
+  if(swap) {
     makeChart("../data/counts.csv")
+    swap = !swap;
 
   } else {
-    button.text('Top Ten')
     makeChart("../data/topten.csv");
-
+    swap = !swap
   }
 }
 
@@ -34,12 +33,14 @@ function makeChart(csv_path) {
         constants.anchor = "center";
         constants.font_size = "20px"
         constants.y_shift = 20;
+        constants.title = "Top Ten Skills"
         break;
       case "../data/counts.csv":
         constants.rotate = 90;
         constants.anchor = "start"
         constants.font_size = "14px"
         constants.y_shift = 0;
+        constants.title = "Software Engineering Skills"
         break;
     }
 
@@ -93,5 +94,15 @@ function makeChart(csv_path) {
           .attr("y", function(d) { return y(+d.Percentage); })
           .attr("width", x.bandwidth())
           .attr("height", function(d) { return height - y(+d.Percentage); });
+
+      svg.append("text")
+          .attr("x", (width / 2))
+          .attr("y", margin.top*1.5)
+          .attr("text-anchor", "middle")
+          .style("font-size", "30px")
+          .text(constants.title);
+
     });
+
+
 }
