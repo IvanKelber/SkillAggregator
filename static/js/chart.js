@@ -45,7 +45,7 @@ function makeChart(csv_path) {
     }
 
     var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 135, left: 40},
+        margin = {top: 50, right: 20, bottom: 135, left: 40},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -55,6 +55,13 @@ function makeChart(csv_path) {
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong># of postings looking for "+d.Skill+":</strong> <span style='color:black'>" + d.Count + "</span>";
+    });
+    svg.call(tip);
     d3.csv(csv_path, function(d) {
       d.Percentage = +d.Percentage;
       return d;
@@ -93,7 +100,9 @@ function makeChart(csv_path) {
           .attr("x", function(d) { return x(d.Skill); })
           .attr("y", function(d) { return y(+d.Percentage); })
           .attr("width", x.bandwidth())
-          .attr("height", function(d) { return height - y(+d.Percentage); });
+          .attr("height", function(d) { return height - y(+d.Percentage); })
+          .on('mouseover',tip.show)
+          .on('mouseout',tip.hide);
 
       svg.append("text")
           .attr("x", (width / 2))
