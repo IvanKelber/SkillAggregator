@@ -45,7 +45,7 @@ function makeChart(csv_path) {
     }
 
     var svg = d3.select("svg"),
-        margin = {top: 50, right: 20, bottom: 135, left: 40},
+        margin = {top: 50, right: 40, bottom: 135, left: 100},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -102,7 +102,8 @@ function makeChart(csv_path) {
           .attr("width", x.bandwidth())
           .attr("height", function(d) { return height - y(+d.Percentage); })
           .on('mouseover',tip.show)
-          .on('mouseout',tip.hide);
+          .on('mouseout',tip.hide)
+          .on('click',tip.hide);
 
       svg.append("text")
           .attr("x", (width / 2))
