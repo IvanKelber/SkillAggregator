@@ -38,7 +38,11 @@ def main():
         writer = csv.writer(counts)
         header = ["Skill","Count","Percentage"]
         writer.writerow(header)
+        k = 0
         for skill,count in sorted(total_count.items(),key=lambda x: -x[1]):
+            if(k > 10):
+                break
+            k += 1
             writer.writerow([skill,count,'%.2f'%((count/total_posts)*100)])
 
     # for url in not_hit_urls:

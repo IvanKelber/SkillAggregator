@@ -32,11 +32,12 @@ function makeChart() {
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x))
           .selectAll("text")
-          .attr("y", 0)
+          .attr("y", 20)
           .attr("x", 9)
           .attr("dy", ".35em")
-          .attr("transform","rotate(90)")
-          .style("text-anchor","start");
+          .attr("transform","rotate(0)")
+          .style("text-anchor","center")
+          .style("font-size","20px");
 
       g.append("g")
           .attr("class", "axis axis--y")
